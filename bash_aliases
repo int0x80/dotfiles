@@ -74,7 +74,7 @@ alias traceroute='/usr/bin/grc /usr/sbin/traceroute'
 alias wdiff='/usr/bin/grc '
 
 ## grep aliases
-alias grep="grep --color=always"
+alias grep="grep --color=auto"
 alias ngrep="grep -n"
 
 alias egrep="egrep --color=auto"
