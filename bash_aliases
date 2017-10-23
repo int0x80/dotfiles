@@ -1,6 +1,7 @@
 # -----------------------------------------------------------
 # helpers
 # -----------------------------------------------------------
+grepcontent() { egrep -v '^(#|;)' "${1}" | grep -v "^$"; }
 alias screenr="screen -raAd"
 shreddir() { find "${1}" -type f -exec shred -n 1 -vzu "{}" \; && find "${1}" -depth -empty -type d -exec rmdir -v "{}" \;; }
 alias shred="shred -uzn 1"
