@@ -1,7 +1,17 @@
 # -----------------------------------------------------------
 # helpers
 # -----------------------------------------------------------
+function mountshare() {
+  vmware-hgfsclient | while read folder; do
+    sudo mkdir -p "/mnt/hgfs/${folder}"
+    sudo umount -f "/mnt/hgfs/${folder}" 2>/dev/null
+    sudo vmhgfs-fuse -o allow_other -o auto_unmount ".host:/${folder}" "/mnt/hgfs/${folder}"
+    sleep 2s
+  done
+}
+
 grepcontent() { egrep -v '^(#|;)' "${1}" | grep -v "^$"; }
+ippls() { ip -o addr show | grep 'inet ' | awk '{print $2 " " $4}' | sed -e "s/\/[0-9]*$//g"; }
 alias screenr="screen -raAd"
 shreddir() { find "${1}" -type f -exec shred -n 1 -vzu "{}" \; && find "${1}" -depth -empty -type d -exec rmdir -v "{}" \;; }
 alias shred="shred -uzn 1"
