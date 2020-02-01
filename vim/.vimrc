@@ -5,20 +5,10 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
-set errorformat+=%.%#PHP:\ %m\ \(in\ %f\ on\ line\ %l\)%.%#,
-  \%E%[0-9]%#.%m:%f?rev=%.%##L%l\ %.%#,%C%.%#
-
-autocmd BufNewFile,BufRead svn-commit.*tmp :0r $SVN_COMMIT_TEMPLATE
-
-
-set nocompatible
-
-set tags=tags;/
-
 set incsearch                 " incrimental search
 set hlsearch                  " highlighting when searching
 
-filetype indent plugin off
+filetype indent plugin on
 set autoindent
 
 set backspace=2
@@ -38,23 +28,7 @@ set foldmethod=indent         " indent based folding
 
 set noerrorbells              " no bells in terminal
 set undolevels=1000           " number of undos stored
-set viminfo='50,"50           " '=marks for x files, "=registers for x files
 
-
-
-
-:vmap gb :<C-U>!git blame % -L<C-R>=line("'<") <CR>,<C-R>=line("'>") <CR><CR>
-:nmap gb :!git blame %<CR>
-
-
-if &t_Co > 2 || has("gui_running")
- :syntax on
- " Change the highlight color for Comment and Special
- " to Cyan.  Blue is too dark for a black background.
- "
- :highlight Comment  term=bold ctermfg=cyan guifg=cyan
- :highlight Special  term=bold ctermfg=cyan guifg=cyan
- :highlight Constant term=bold ctermfg=red guifg=cyan
-endif
-
+:syntax on
 :set number
+:colorscheme obsidian
