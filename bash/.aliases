@@ -1,0 +1,46 @@
+# -----------------------------------------------------------
+# leaner alias file
+# -----------------------------------------------------------
+function shreddir() { find "${1}" -type f -exec shred -n 1 -vzu "{}" \; && find "${1}" -depth -empty -type d -exec rmdir -v "{}" \;; }
+function urldecode() { : "${*//+/ }"; echo -e "${_//%/\\x}"; }
+
+
+# -----------------------------------------------------------
+# coreutils
+# -----------------------------------------------------------
+alias rm='rm -v'
+alias cp='cp -av'
+alias mv='mv -v'
+alias mkdir='mkdir -pv'
+alias bat='batcat'
+
+
+# -----------------------------------------------------------
+# checksum things
+# -----------------------------------------------------------
+alias rand512="dd if=/dev/urandom bs=64k count=1 2>/dev/null | sha512sum - | cut -d ' ' -f 1"
+alias rand256="dd if=/dev/urandom bs=64k count=1 2>/dev/null | sha256sum - | cut -d ' ' -f 1"
+alias rand64="dd if=/dev/urandom bs=64 count=1 2>/dev/null | base64 -w 96"
+alias randmd5="dd if=/dev/urandom bs=64 count=1 2>/dev/null | md5sum - | cut -d ' ' -f 1"
+alias rand32="dd if=/dev/urandom bs=64k count=1 2>/dev/null | md5sum - | cut -c 1-8"
+function checksums() { echo -n "md5:    " ; md5sum "${@}" ; echo -n "sha1:   " ; sha1sum "${@}" ; echo -n "sha256: " ; sha256sum "${@}" ; echo -n "sha512: " ; sha512sum "${@}" ; }
+
+
+# -----------------------------------------------------------
+# docker aliases/functions
+# -----------------------------------------------------------
+# alias bat='docker run --rm -it -e BAT_THEME -e BAT_STYLE -e BAT_TABS -v "$(pwd):/myapp" danlynn/bat'
+alias evince="docker run --rm -it -v $HOME/Documents/:/root/documents/ -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY evince"
+
+# firefox
+function ff() { mkdir /dev/shm/firefox && docker run --rm --name=firefox -p 5800:5800 -e SECURE_CONNECTION=1 -v /dev/shm/firefox:/config:rw --shm-size 2g jlesage/firefox && rm -rf /dev/shm/firefox; }
+
+# metasploit
+function msfconsole() { mkdir /dev/shm/metasploit && docker run --rm -it -v /dev/shm/metasploit:/home/msf/.msf4:rw -p 8443-8500:8443-8500 metasploitframework/metasploit-framework ./msfconsole && rm -rf /dev/shm/metasploit; }
+function msfvenom() { mkdir /dev/shm/{metasploit,msfvenom} && docker run --rm -it -v /dev/shm/metasploit:/home/msf/.msf4:rw -v /dev/shm/msfvenom:/data metasploitframework/metasploit-framework ./msfvenom ${@} && cp -av /dev/shm/msfvenom/* /dev/shm/ && rm -rf /dev/shm/{metasploit,msfvenom}; }
+
+# libreoffice
+function libre_calc() { docker run --rm -it --name docker_libreoffice_calc --hostname libreoffice -e PGID=1000 -e PUID=1000 -c 512 -m 2096m -e DISPLAY=unix:0 -v /usr/share/fonts:/usr/share/fonts:ro -v /home/user/.shared/docker/libreoffice:/home/alpine -v /tmp/.X11-unix:/tmp/.X11-unix woahbase/alpine-libreoffice:x86_64 --calc --nologo; }
+function libre_draw() { docker run --rm -it --name docker_libreoffice_draw --hostname libreoffice -e PGID=1000 -e PUID=1000 -c 512 -m 2096m -e DISPLAY=unix:0 -v /usr/share/fonts:/usr/share/fonts:ro -v /home/user/.shared/docker/libreoffice:/home/alpine -v /tmp/.X11-unix:/tmp/.X11-unix woahbase/alpine-libreoffice:x86_64 --draw --nologo; }
+function libre_impress() { docker run --rm -it --name docker_libreoffice_impress --hostname libreoffice -e PGID=1000 -e PUID=1000 -c 512 -m 2096m -e DISPLAY=unix:0 -v /usr/share/fonts:/usr/share/fonts:ro -v /home/user/.shared/docker/libreoffice:/home/alpine -v /tmp/.X11-unix:/tmp/.X11-unix woahbase/alpine-libreoffice:x86_64 --impress --nologo; }
+function libre_writer() { docker run --rm -it --name docker_libreoffice_writer --hostname libreoffice -e PGID=1000 -e PUID=1000 -c 512 -m 2096m -e DISPLAY=unix:0 -v /usr/share/fonts:/usr/share/fonts:ro -v /home/user/.shared/docker/libreoffice:/home/alpine -v /tmp/.X11-unix:/tmp/.X11-unix woahbase/alpine-libreoffice:x86_64 --writer --nologo; }

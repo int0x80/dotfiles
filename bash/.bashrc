@@ -14,7 +14,7 @@ esac
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 # -----------------------------------------------------------
-HISTCONTROL=ignoreboth
+HISTCONTROL=ignorespace
 
 # -----------------------------------------------------------
 # append to the history file, don't overwrite it
@@ -24,8 +24,10 @@ shopt -s histappend
 # -----------------------------------------------------------
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 # -----------------------------------------------------------
+HISTTIMEFORMAT="%h %d %H:%M:%S "
 HISTSIZE=1000000
 HISTFILESIZE=2000000
+PROMPT_COMMAND='history -a'
 
 # -----------------------------------------------------------
 # check the window size after each command and, if necessary,
@@ -127,8 +129,8 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 # -----------------------------------------------------------
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f ~/.aliases ]; then
+    . ~/.aliases
 fi
 
 # -----------------------------------------------------------
@@ -187,7 +189,8 @@ my_prompt() {
   local lime_yellow=$(tput setaf 190)
   local powder_blue=$(tput setaf 153)
 
-  export PS1="\[$reset\]\t \[$purple\]\h \[$cyan\]\w \$([[ -n \$(git branch 2>/dev/null) ]] && echo \"\[$reset\](\[$purple\]\$(parse_git_branch)\[$reset\]) \")\[$green\]\$ \[$reset\]"
+  # export PS1="\[$reset\]\t \[$yellow\]\h \[$powder_blue\]\w \$([[ -n \$(git branch 2>/dev/null) ]] && echo \"\[$reset\](\[$grey\]\$(parse_git_branch)\[$reset\]) \")\[$green\]\$ \[$reset\]"
+  export PS1="\[$reset\]\t \[$powder_blue\]\w \$([[ -n \$(git branch 2>/dev/null) ]] && echo \"\[$reset\](\[$grey\]\$(parse_git_branch)\[$reset\]) \")\[$green\]\$ \[$reset\]"
 }
 
 my_prompt
