@@ -175,7 +175,8 @@ parse_git_branch () {
 }
 
 my_prompt() {
-  source ~/.git-prompt.bash
+  source ~/.git-prompt.sh
+  source ~/.git-completion.bash
   local black=$(tput setaf 0)
   local white=$(tput setaf 7)
   local grey=$(tput setaf 7 && tput dim)
